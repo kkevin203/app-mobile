@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="454.776" height="958.189" viewBox="0 0 454.776 958.189">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.907" cy="0.623" r="1.102" gradientTransform="matrix(-0.568, -0.823, 0.626, -0.432, 1.019, 1.667)" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#252964"/>
+      <stop offset="0.349" stop-color="#191a22"/>
+      <stop offset="1" stop-color="#191a1e"/>
+    </radialGradient>
+  </defs>
+  <g id="Tracé_2177" data-name="Tracé 2177" fill="url(#radial-gradient)">
+    <path d="M 454.2762451171875 957.6889038085938 L 0.5000048875808716 957.6889038085938 L 0.5000048875808716 0.4999813139438629 L 454.2762451171875 0.4999813139438629 L 454.2762451171875 957.6889038085938 Z" stroke="none"/>
+    <path d="M 1 1 L 1 957.1889038085938 L 453.7762451171875 957.1889038085938 L 453.7762451171875 1 L 1 1 M 0 0 L 454.7762451171875 0 L 454.7762451171875 958.1889038085938 L 0 958.1889038085938 L 0 0 Z" stroke="none" fill="#707070"/>
+  </g>
+</svg>

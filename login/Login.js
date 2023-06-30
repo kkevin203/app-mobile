@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import { View, Button, TextInput,Text,StyleSheet  } from 'react-native';
+import { View, TouchableOpacity, TextInput,Text,StyleSheet  } from 'react-native';
+import NuageBlue from '../assets/svg/nuageblue';
 
-
-const Login = (handleEmailPasswordSubmit) => {
+const Login = () => {
   const [identifiant, setIdentifiant] = useState('');
   const [password, setPassword] = useState('');
   const [step, setStep] = useState(1);
   
-
+  const handleForgottenPassword = () => {
+    // Logique pour gérer l'action du mot de passe oublié
+  };
 
   const handleIdentifiant = () => {
     // Logique pour valider le prénom et passer à l'étape suivante
@@ -16,6 +18,7 @@ const Login = (handleEmailPasswordSubmit) => {
 
   return (
     <View style={styles.container}>
+      <NuageBlue />
       <View style={styles.container1}>
       <View style={styles.login}>
         <Text style={styles.emoji}> &#x1F600;</Text>
@@ -27,7 +30,7 @@ const Login = (handleEmailPasswordSubmit) => {
           value={identifiant}
           onChangeText={text => setIdentifiant(text)}
           style={styles.input}
-          require={true}
+          required={true}
           
         />
     <View>
@@ -37,10 +40,18 @@ const Login = (handleEmailPasswordSubmit) => {
               onChangeText={text => setPassword(text)}
               style={styles.input}
               secureTextEntry={true}
-              require={true}
+              required={true}
             />
-    <Button title="Connect" onPress={handleIdentifiant} style={styles.button}/>
-          </View>
+           <TouchableOpacity onPress={handleForgottenPassword}>
+  <Text style={styles.password}>Forgotten Password ?</Text>
+</TouchableOpacity>
+              </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleIdentifiant}
+            >
+              <Text style={styles.buttonText}>Connect</Text>
+            </TouchableOpacity>  
   </View>
       </View>
       </View>
@@ -50,7 +61,7 @@ const Login = (handleEmailPasswordSubmit) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#E5EBF5',
     justifyContent: 'flex-end',
   },
   container1: {
@@ -60,6 +71,12 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
     padding: 20,
+  },
+  svgImage: {
+    position: 'absolute',
+    width: 369.494,
+    height: 346.344,
+    color: '#5C84E8',
   },
   title: {
     fontSize: 20,
@@ -78,6 +95,13 @@ const styles = StyleSheet.create({
     alignItems:"center",
     margin: 20,
       },
+password:{
+  color: 'blue',
+justifyContent: 'flex-end',
+textAlign: 'right', 
+cursor: 'pointer',
+
+      },
 buttonContainer: {
 
     flexDirection: 'row',
@@ -85,12 +109,22 @@ buttonContainer: {
   },
   input: {
     height: 40,
-    width: '100%',
+    width: 300,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 50,
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+  button: {
+    height: 40,
+    width: 150,
+    backgroundColor: '#5C84E8',
+    borderWidth: 1,
+    borderRadius: 50,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

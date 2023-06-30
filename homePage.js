@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, Button, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
+import Nuage from "./assets/svg/nuage";
+import { LinearGradient} from 'expo-linear-gradient';
 
 const HomePage = ({ navigation }) => {
   const handleLogin = () => {
@@ -11,15 +13,18 @@ const HomePage = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-   <SvgUri
-  width="369.494"
-  height="346.344"
-  uri="./assets/svg/nuage.svg"
-/>
-
-
-      <View style={styles.container1}>
+   
+    <><View style={styles.container}>
+      <LinearGradient
+        colors={['#232328', '#2C3064']}
+        start={[0, 0]}
+        end={[1, 1]}
+        style={styles.gradient} />
+      <SvgUri
+        width={369.494}
+        height={346.344}
+        uri="./assets/svg/nuage.svg"
+        style={styles.svgImage} />
         <Text style={styles.title}>Explore your new nightlife 2.0</Text>
         <Text style={styles.text}>You know what’s cooler than party? Keep your memories all the way after</Text>
         <View style={styles.buttonContainer}>
@@ -30,12 +35,26 @@ const HomePage = ({ navigation }) => {
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </View>
-      </View>
     </View>
+    <View style={styles.container1}>
+      </View></>
+    
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  svgImage: {
+    position: 'absolute',
+    width: 369.494,
+    height: 346.344,
+  },
   container: {
     flex: 1,
     backgroundColor: 'black',
