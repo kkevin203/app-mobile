@@ -15,30 +15,69 @@ const Login = (handleEmailPasswordSubmit) => {
   };
 
   return (
-    <View>
-    <Text style={styles.title}>Welcome Back</Text> 
-    <Text style={styles.text}>Please enter your school e-mail and password</Text>    
-    <TextInput
-      placeholder="School e-mail or username"
-      value={identifiant}
-      onChangeText={text => setIdentifiant(text)}
-      style={styles.input}
-    />
-    <Button title="Next" onPress={handleIdentifiant} style={styles.button}/>
+    <View style={styles.container}>
+      <View style={styles.container1}>
+      <View style={styles.login}>
+        <Text style={styles.emoji}> &#x1F600;</Text>
+
+        <Text style={styles.title}>Welcome Back</Text> 
+        <Text style={styles.text}>Please enter your school e-mail and password</Text>    
+        <TextInput
+          placeholder="School e-mail or username"
+          value={identifiant}
+          onChangeText={text => setIdentifiant(text)}
+          style={styles.input}
+          require={true}
+          
+        />
     <View>
     <TextInput
               placeholder="Password"
               value={password}
               onChangeText={text => setPassword(text)}
               style={styles.input}
+              secureTextEntry={true}
+              require={true}
             />
-            <Button title="Validate" onPress={handleEmailPasswordSubmit} style={styles.button}/>
+    <Button title="Connect" onPress={handleIdentifiant} style={styles.button}/>
           </View>
   </View>
+      </View>
+      </View>
 );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'lightblue',
+    justifyContent: 'flex-end',
+  },
+  container1: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
+    padding: 20,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  text:{
+    marginBottom: 20,
+  },
+  emoji:{
+    fontSize:40,
+    
+  },
+  login:{
+    justifyContent: "center",
+    alignItems:"center",
+    margin: 20,
+      },
 buttonContainer: {
 
     flexDirection: 'row',

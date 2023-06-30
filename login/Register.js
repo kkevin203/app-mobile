@@ -8,6 +8,7 @@ const Register = () => {
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [schoolName, setSchoolName] = useState('');
+  const [SchoolYear, setSchoolYear] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,19 +34,23 @@ const Register = () => {
     // Logique pour valider le nom de l'école et passer à l'étape suivante
     setStep(5);
   };
+  const handleSchoolYearSubmit = () => {
+    // Logique pour valider le nom de l'école et passer à l'étape suivante
+    setStep(6);
+  };
 
   const handlePhoneNumberSubmit = () => {
     // Logique pour valider le numéro de téléphone et passer à l'étape suivante
-    setStep(6);
+    setStep(7);
   };
 
   const handleEmailPasswordSubmit = () => {
     // Logique pour valider l'adresse e-mail et le mot de passe et passer a l'étape suivante
-    setStep(7);
+    setStep(8);
   };
   const handleConfirmationCode = () => {
     // Logique pour valider le numero de téléphone puis effectuer la validation du compte
-    setStep(8);
+    setStep(9);
   };
 
   return (
@@ -54,7 +59,8 @@ const Register = () => {
       <Text style={styles.text}>Create your account to be badass</Text>    
       <View style={styles.container1}>
         {step === 1 && (
-          <View>
+          <View style={styles.Register}>
+            <Text style={styles.emoji}> &#x1f44b;</Text>
             <Text style={styles.title}>Welcome</Text> 
             <Text style={styles.text}>Please enter your first name</Text>  
             <View style={styles.arrowContainer}>
@@ -72,7 +78,9 @@ const Register = () => {
         )}
 
         {step === 2 && (
-          <View>
+          
+            <View style={styles.Register}>
+            <Text style={styles.emoji}> &#x1F440;</Text>
             <Text style={styles.title}>Welcome</Text> 
             <Text style={styles.text}>Please enter your last name</Text>   
             <View style={styles.arrowContainer}>
@@ -91,7 +99,8 @@ const Register = () => {
         )}
 
         {step === 3 && (
-          <View>
+                  <View style={styles.Register}>
+                  <Text style={styles.emoji}> &#x1F440;</Text>
             <Text style={styles.title}>Welcome</Text> 
             <Text style={styles.text}>Choose your username</Text>  
             <View style={styles.arrowContainer}>
@@ -110,7 +119,8 @@ const Register = () => {
         )}
 
         {step === 4 && (
-          <View>
+                  <View style={styles.Register}>
+                  <Text style={styles.emoji}> &#127979;</Text>
             <Text style={styles.title}>Going to school ?</Text> 
             <Text style={styles.text}>Please enter the name of your school</Text>  
             <View style={styles.arrowContainer}>
@@ -127,9 +137,29 @@ const Register = () => {
           </View>
           </View>
         )}
-
         {step === 5 && (
-          <View>
+                  <View style={styles.Register}>
+                  <Text style={styles.emoji}> &#127979;</Text>
+            <Text style={styles.title}>Where are you in your studies? </Text> 
+            <Text style={styles.text}>What year are you in ? </Text>  
+            <View style={styles.arrowContainer}>
+  
+            <TextInput
+              placeholder="First Year "
+              value={SchoolYear}
+              onChangeText={text => setSchoolYear(text)}
+              style={styles.input}
+            />
+            <TouchableHighlight title="Next" onPress={handleSchoolYearSubmit} >
+            <AntDesign name="right" size={40} color="black" />
+            </TouchableHighlight>
+          </View>
+          </View>
+        )}
+
+        {step === 6 && (
+                  <View style={styles.Register}>
+                  <Text style={styles.emoji}> &#127979;</Text>
             <Text style={styles.title}>Secure your account</Text> 
             <Text style={styles.text}>Please enter your phone number</Text> 
             <View style={styles.arrowContainer}>
@@ -147,8 +177,9 @@ const Register = () => {
           </View>
         )}
 
-        {step === 6 && (
-          <View>
+        {step === 7 && (
+                  <View style={styles.Register}>
+                  <Text style={styles.emoji}> &#x1F600;</Text>
             <Text style={styles.title}>One step away… </Text> 
             <Text style={styles.text}>Please enter your school e-mail and password</Text>  
 
@@ -169,8 +200,9 @@ const Register = () => {
 
           </View>
         )}
-        {step === 7 && (
-          <View>
+        {step === 8 && (
+                  <View style={styles.Register}>
+                  <Text style={styles.emoji}> &#x1f44b;</Text>
             <Text style={styles.title}>Confirmation Code</Text> 
             <Text style={styles.text}>Enter the 6 digit validation code </Text>  
             <View style={styles.arrowContainer}>
@@ -187,8 +219,9 @@ const Register = () => {
           </View>
           </View>
         )}
-        {step === 8 && (
-          <View>
+        {step === 9 && (
+                  <View style={styles.Register}>
+                  <Text style={styles.emoji}>&#10004;&#65039;</Text>
             <Text style={styles.title}>Perfect</Text> 
             <Text style={styles.text}>You successfully created your account ! Welcome {firstName}</Text>   
             <View style={styles.buttonContainer}>
@@ -217,10 +250,22 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 10,
     padding: 20,
   },
+  emoji:{
+    fontSize:40,
+    
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  text:{
+    marginBottom: 20,
+  },
+  Register:{
+justifyContent: "center",
+alignItems:"center",
+margin: 20,
   },
   input: {
     height: 40,
