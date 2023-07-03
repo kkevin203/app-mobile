@@ -1,64 +1,78 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableHighlight, Button } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
+import NuageBlue from '../assets/svg/nuageblue';
 import { AntDesign } from '@expo/vector-icons'; 
+import * as yup from 'yup';
+
 
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [schoolName, setSchoolName] = useState('');
-  const [SchoolYear, setSchoolYear] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmationCode, setConfirmationCode] = useState('');
-  const [step, setStep] = useState(1); // Étape du formulaire : 1 pour le prénom, 2 pour le nom de famille, etc.
+  const [formData, setFormData] = useState({
+    firstName : '',
+    lastName : '',
+    userName : '',
+    schoolName: '',
+    schoolYear: '',
+    phoneNumber : '',
+    email : '',
+    password : '',
+    confirmationCode : '',
+    step: 1, 
+});
+ const [validationErrors, setValidationErrors] = useState({});   
 
-  const handleFirstNameSubmit = () => {
-    // Logique pour valider le prénom et passer à l'étape suivante
-    setStep(2);
+ const validationSchema = yup.object().shape({
+    firstName: yup.string().required('First name is required'),
+    lastName: yup.string().required('Last name is required'),
+    userName: yup.string().required('Username is required'),
+    schoolName: yup.string().required('School name is required'),
+    schoolYear: yup.string().required('School year is required'),
+    phoneNumber: yup.number().required('Phone number is required'),
+    email: yup.string().required('Email is required'),
+    password: yup.string().required('Password is required'),
+    confirmationCode: yup.number().required('Confirmation code is required'),
+  });
+  
+   const handleValidation = async (data, schema, nextStep) => {
+    try {
+      await schema.validate(data);
+      setFormData((prevData) => ({ ...prevData, step: nextStep }));
+      setValidationErrors({});
+    } catch (error) {
+      const errors = error.inner.reduce((acc, err) => {
+        acc[err.path] = err.message;
+        return acc;
+      }, {});
+      setValidationErrors(errors);
+    }
   };
+  const handleStepSubmit = async () => {
+    if (formData.firstName !== '') {
+    const data = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      userName: formData.userName,
+      schoolName: formData.schoolName,
+      schoolYear: formData.schoolYear,
+      phoneNumber: formData.phoneNumber,
+      email: formData.email,
+      password: formData.password,
+      confirmationCode: formData.confirmationCode,
+    };
 
-  const handleLastNameSubmit = () => {
-    // Logique pour valider le nom de famille et passer à l'étape suivante
-    setStep(3);
-  };
-
-  const handleUsernameSubmit = () => {
-    // Logique pour valider l'identifiant et passer à l'étape suivante
-    setStep(4);
-  };
-
-  const handleSchoolNameSubmit = () => {
-    // Logique pour valider le nom de l'école et passer à l'étape suivante
-    setStep(5);
-  };
-  const handleSchoolYearSubmit = () => {
-    // Logique pour valider le nom de l'école et passer à l'étape suivante
-    setStep(6);
-  };
-
-  const handlePhoneNumberSubmit = () => {
-    // Logique pour valider le numéro de téléphone et passer à l'étape suivante
-    setStep(7);
-  };
-
-  const handleEmailPasswordSubmit = () => {
-    // Logique pour valider l'adresse e-mail et le mot de passe et passer a l'étape suivante
-    setStep(8);
-  };
-  const handleConfirmationCode = () => {
-    // Logique pour valider le numero de téléphone puis effectuer la validation du compte
-    setStep(9);
+    await handleValidation(data, validationSchema, formData.step + 1);
+  setFormData((prevData) => ({ ...prevData, step: formData.step + 1 }));
+  setValidationErrors({});
+  }
   };
 
   return (
     <View style={styles.container}>
+            <NuageBlue />
       <Text style={styles.title}>Explore your new nightlife 2.0</Text> 
       <Text style={styles.text}>Create your account to be badass</Text>    
       <View style={styles.container1}>
-        {step === 1 && (
+        {formData.step === 1 && (
           <View style={styles.Register}>
             <Text style={styles.emoji}> &#x1f44b;</Text>
             <Text style={styles.title}>Welcome</Text> 
@@ -66,18 +80,21 @@ const Register = () => {
             <View style={styles.arrowContainer}>
               <TextInput
                 placeholder="First Name"
-                value={firstName}
-                onChangeText={text => setFirstName(text)}
+                value={formData.firstName}
+                onChangeText={text => setFormData(prevData => ({ ...prevData, firstName: text }))}
                 style={styles.input}
                 />
-                <TouchableHighlight onPress={handleFirstNameSubmit} >
+                {validationErrors.firstName && (
+                  <Text style={styles.errorText}>{validationErrors.firstName}</Text>
+                )}
+                <TouchableHighlight onPress={handleStepSubmit} >
                 <AntDesign name="right" size={40} color="black" />
                 </TouchableHighlight>
               </View>  
           </View>
         )}
 
-        {step === 2 && (
+        {formData.step === 2 && (
           
             <View style={styles.Register}>
             <Text style={styles.emoji}> &#x1F440;</Text>
@@ -87,18 +104,21 @@ const Register = () => {
  
             <TextInput
               placeholder="Last Name"
-              value={lastName}
-              onChangeText={text => setLastName(text)}
+              value={formData.lastName}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, lastName: text }))}
               style={styles.input}
             />
-            <TouchableHighlight title="Next" onPress={handleLastNameSubmit}>
+             {validationErrors.lastName && (
+                  <Text style={styles.errorText}>{validationErrors.lastName}</Text>
+                )}
+            <TouchableHighlight title="Next" onPress={handleStepSubmit}>
             <AntDesign name="right" size={40} color="black" />
             </TouchableHighlight>
           </View>
           </View>
         )}
 
-        {step === 3 && (
+        {formData.step === 3 && (
                   <View style={styles.Register}>
                   <Text style={styles.emoji}> &#x1F440;</Text>
             <Text style={styles.title}>Welcome</Text> 
@@ -107,18 +127,21 @@ const Register = () => {
   
             <TextInput
               placeholder="Username"
-              value={username}
-              onChangeText={text => setUsername(text)}
+              value={formData.userName}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, userName: text }))}
               style={styles.input}
             />
-            <TouchableHighlight title="Next" onPress={handleUsernameSubmit} >
+             {validationErrors.userName && (
+                  <Text style={styles.errorText}>{validationErrors.userName}</Text>
+                )}
+            <TouchableHighlight title="Next" onPress={handleStepSubmit} >
             <AntDesign name="right" size={40} color="black" />
             </TouchableHighlight>
           </View>
           </View>
         )}
 
-        {step === 4 && (
+        {formData.step === 4 && (
                   <View style={styles.Register}>
                   <Text style={styles.emoji}> &#127979;</Text>
             <Text style={styles.title}>Going to school ?</Text> 
@@ -127,17 +150,20 @@ const Register = () => {
   
             <TextInput
               placeholder="Name of the school"
-              value={schoolName}
-              onChangeText={text => setSchoolName(text)}
+              value={formData.schoolName}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, schoolName: text }))}
               style={styles.input}
             />
-            <TouchableHighlight title="Next" onPress={handleSchoolNameSubmit} >
+             {validationErrors.schoolName && (
+                  <Text style={styles.errorText}>{validationErrors.schoolName}</Text>
+                )}
+            <TouchableHighlight title="Next" onPress={handleStepSubmit} >
             <AntDesign name="right" size={40} color="black" />
             </TouchableHighlight>
           </View>
           </View>
         )}
-        {step === 5 && (
+        {formData.step === 5 && (
                   <View style={styles.Register}>
                   <Text style={styles.emoji}> &#127979;</Text>
             <Text style={styles.title}>Where are you in your studies? </Text> 
@@ -146,18 +172,21 @@ const Register = () => {
   
             <TextInput
               placeholder="First Year "
-              value={SchoolYear}
-              onChangeText={text => setSchoolYear(text)}
+              value={formData.schoolYear}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, schoolYear: text }))}
               style={styles.input}
             />
-            <TouchableHighlight title="Next" onPress={handleSchoolYearSubmit} >
+             {validationErrors.schoolYear && (
+                  <Text style={styles.errorText}>{validationErrors.schoolYear}</Text>
+                )}
+            <TouchableHighlight title="Next" onPress={handleStepSubmit} >
             <AntDesign name="right" size={40} color="black" />
             </TouchableHighlight>
           </View>
           </View>
         )}
 
-        {step === 6 && (
+        {formData.step === 6 && (
                   <View style={styles.Register}>
                   <Text style={styles.emoji}> &#127979;</Text>
             <Text style={styles.title}>Secure your account</Text> 
@@ -166,18 +195,21 @@ const Register = () => {
 
             <TextInput
               placeholder="Phone number +33"
-              value={phoneNumber}
-              onChangeText={text => setPhoneNumber(text)}
+              value={formData.phoneNumber}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, phoneNumber: text }))}
               style={styles.input}
             />
-            <TouchableHighlight title="Next" onPress={handlePhoneNumberSubmit} >
+             {validationErrors.phoneNumber && (
+                  <Text style={styles.errorText}>{validationErrors.phoneNumber}</Text>
+                )}
+            <TouchableHighlight title="Next" onPress={handleStepSubmit} >
             <AntDesign name="right" size={40} color="black" />
             </TouchableHighlight>
           </View>
           </View>
         )}
 
-        {step === 7 && (
+        {formData.step === 7 && (
                   <View style={styles.Register}>
                   <Text style={styles.emoji}> &#x1F600;</Text>
             <Text style={styles.title}>One step away… </Text> 
@@ -186,21 +218,27 @@ const Register = () => {
   
             <TextInput
               placeholder="School e-mail"
-              value={email}
-              onChangeText={text => setEmail(text)}
+              value={formData.email}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, email: text }))}
               style={styles.input}
             />
+             {validationErrors.email && (
+                  <Text style={styles.errorText}>{validationErrors.email}</Text>
+                )}
             <TextInput
               placeholder="Password"
-              value={password}
-              onChangeText={text => setPassword(text)}
+              value={formData.password}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, password: text }))}
               style={styles.input}
             />
-            <Button title="Validate" onPress={handleEmailPasswordSubmit} style={styles.button}/>
+             {validationErrors.password && (
+                  <Text style={styles.errorText}>{validationErrors.password}</Text>
+                )}
+            <Button title="Validate" onPress={handleStepSubmit} style={styles.button}/>
 
           </View>
         )}
-        {step === 8 && (
+        {formData.step === 8 && (
                   <View style={styles.Register}>
                   <Text style={styles.emoji}> &#x1f44b;</Text>
             <Text style={styles.title}>Confirmation Code</Text> 
@@ -209,25 +247,28 @@ const Register = () => {
 
             <TextInput
               placeholder="xxxxxx"
-              value={confirmationCode}
-              onChangeText={text => setConfirmationCode(text)}
+              value={formData.confirmationCode}
+              onChangeText={text => setFormData(prevData => ({ ...prevData, confirmationCode: text }))}
               style={styles.input}
             />
-            <TouchableHighlight title="Next" onPress={handleConfirmationCode} >
+             {validationErrors.confirmationCode && (
+                  <Text style={styles.errorText}>{validationErrors.confirmationCode}</Text>
+                )}
+            <TouchableHighlight title="Next" onPress={handleStepSubmit} >
             <AntDesign name="right" size={40} color="black" />
             </TouchableHighlight>
           </View>
           </View>
         )}
-        {step === 9 && (
+        {formData.step === 9 && (
                   <View style={styles.Register}>
                   <Text style={styles.emoji}>&#10004;&#65039;</Text>
             <Text style={styles.title}>Perfect</Text> 
-            <Text style={styles.text}>You successfully created your account ! Welcome {firstName}</Text>   
+            <Text style={styles.text}>You successfully created your account ! Welcome {formData.firstName}</Text>   
             <View style={styles.buttonContainer}>
  
-            <Button title="Discover" onPress={handleConfirmationCode} style={styles.button}/>
-            <Button title="Edit Profile" onPress={handleConfirmationCode} style={styles.edit}/>
+            <Button title="Discover" onPress={handleStepSubmit} style={styles.button}/>
+            <Button title="Edit Profile" onPress={handleStepSubmit} style={styles.edit}/>
             </View>
           </View>
         )}
@@ -291,6 +332,9 @@ margin: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  errorText: {
+    color: 'red',
+  }
 });
 
 export default Register;
